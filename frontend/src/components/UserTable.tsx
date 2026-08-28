@@ -1,4 +1,5 @@
 import type { User } from '../types';
+import { formatDateOnly, formatTimestamp } from '../utils/date';
 
 interface UserTableProps {
   users: User[];
@@ -7,27 +8,30 @@ interface UserTableProps {
   onDelete: (user: User) => void;
 }
 
-const formatDate = (value: string) =>
-  value
-    ? new Date(value).toLocaleDateString(undefined, {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      })
-    : '-';
-
 export default function UserTable({ users, loading, onEdit, onDelete }: UserTableProps) {
   if (loading) return <div className="table-state">Loading users...</div>;
   if (!users.length) return <div className="table-state">No users match your filters.</div>;
 
   return (
-    <div className="table-wrap">
-      <table className="data-table">
+    <div className="table-wrap users-table-wrap">
+      <table className="data-table users-table">
+        <colgroup>
+          <col className="col-name" />
+          <col className="col-email" />
+          <col className="col-phone" />
+          <col className="col-dob" />
+          <col className="col-location" />
+          <col className="col-gender" />
+          <col className="col-status" />
+          <col className="col-created" />
+          <col className="col-actions" />
+        </colgroup>
         <thead>
           <tr>
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
+            <th>Date of Birth</th>
             <th>Location</th>
             <th>Gender</th>
             <th>Status</th>
@@ -43,6 +47,7 @@ export default function UserTable({ users, loading, onEdit, onDelete }: UserTabl
               </td>
               <td data-label="Email">{user.email}</td>
               <td data-label="Phone">{user.phoneNumber}</td>
+              <td data-label="Date of Birth">{formatDateOnly(user.dateOfBirth)}</td>
               <td data-label="Location">
                 {user.city}, {user.country}
               </td>
@@ -52,7 +57,7 @@ export default function UserTable({ users, loading, onEdit, onDelete }: UserTabl
               <td data-label="Status">
                 <span className={`pill pill-${user.status}`}>{user.status}</span>
               </td>
-              <td data-label="Created">{formatDate(user.createdAt)}</td>
+              <td data-label="Created">{formatTimestamp(user.createdAt)}</td>
               <td data-label="Actions" className="col-actions">
                 <button className="btn btn-sm btn-ghost" onClick={() => onEdit(user)}>
                   Edit

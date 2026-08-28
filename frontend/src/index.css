@@ -131,6 +131,38 @@ select:focus {
   box-shadow: 0 0 0 3px rgba(47, 111, 237, 0.12);
 }
 
+.password-input {
+  position: relative;
+  display: flex;
+}
+
+/* Room for the toggle so long values never run underneath it. */
+.password-input input {
+  padding-right: 42px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.password-toggle:hover {
+  background: var(--muted-bg);
+  color: var(--text);
+}
+
 .alert {
   padding: 10px 14px;
   border-radius: var(--radius);
@@ -325,6 +357,44 @@ select:focus {
   padding: 11px 14px;
   text-align: left;
   border-bottom: 1px solid var(--border);
+}
+
+/* Nine columns need a floor, otherwise they compress into unreadable slivers. */
+.users-table {
+  min-width: 1080px;
+}
+
+.users-table .col-name {
+  width: 15%;
+}
+
+.users-table .col-email {
+  width: 19%;
+}
+
+.users-table .col-phone {
+  width: 13%;
+}
+
+.users-table .col-dob,
+.users-table .col-created {
+  width: 11%;
+}
+
+.users-table .col-location {
+  width: 16%;
+}
+
+.users-table .col-gender,
+.users-table .col-status {
+  width: 8%;
+}
+
+/* Email and location are the two that benefit most from wrapping over scrolling. */
+.users-table tbody td[data-label='Email'],
+.users-table tbody td[data-label='Location'] {
+  white-space: normal;
+  word-break: break-word;
 }
 
 .data-table th {
@@ -616,5 +686,77 @@ select:focus {
 
   .modal {
     padding: 18px;
+  }
+
+  /*
+   * Below this width a nine-column table is only usable by scrolling sideways,
+   * so each row becomes a stacked card instead. The labels come from the
+   * data-label attributes already on every cell.
+   */
+  .users-table-wrap {
+    overflow-x: visible;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .users-table {
+    min-width: 0;
+    white-space: normal;
+  }
+
+  .users-table thead,
+  .users-table colgroup {
+    display: none;
+  }
+
+  .users-table,
+  .users-table tbody,
+  .users-table tr,
+  .users-table td {
+    display: block;
+    width: auto;
+  }
+
+  .users-table tr {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 6px 14px;
+    margin-bottom: 12px;
+  }
+
+  .users-table tbody tr:hover {
+    background: var(--surface);
+  }
+
+  .users-table td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 7px 0;
+    text-align: right;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .users-table td::before {
+    content: attr(data-label);
+    flex-shrink: 0;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-align: left;
+  }
+
+  .users-table tr td:last-child {
+    border-bottom: none;
+  }
+
+  .users-table .col-actions {
+    justify-content: flex-end;
   }
 }

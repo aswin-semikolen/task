@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { getErrorMessage } from '../api/client';
 import { GENDERS, STATUSES, type User, type UserFormValues } from '../types';
+import PasswordInput from './PasswordInput';
 
 const EMPTY: UserFormValues = {
   firstName: '',
@@ -113,11 +114,11 @@ export default function UserFormModal({ user, onClose, onSubmit }: UserFormModal
 
             <label className="field">
               <span>{isEdit ? 'Password' : 'Password *'}</span>
-              <input
-                type="password"
+              <PasswordInput
                 value={values.password}
-                onChange={(e) => set('password', e.target.value)}
+                onChange={(value) => set('password', value)}
                 placeholder={isEdit ? 'Leave blank to keep current' : 'Min 8 chars, upper, lower, number'}
+                autoComplete="new-password"
                 required={!isEdit}
               />
             </label>
